@@ -1,0 +1,142 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background: #f2f2f2;
+}  
+
+#start-screen,
+#game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#game {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+}
+
+#game-video {
+    width: 100%;
+    height: 50vh;
+    object-fit: contain;
+    background: black;
+    cursor: pointer;
+}  
+
+#buttons {
+    height: 20vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #eee;
+    width: 100%;
+}
+
+.tap-button {
+    font-size: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #ccc;
+    cursor: pointer;
+    user-select: none;
+}
+
+.tap-button:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+.highlight {
+    background: yellow !important;
+}
+
+#log {
+    height: 20vh;
+    overflow-y: auto;
+    background: #ddd;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#log-status {
+    font-weight: bold;
+    background: #bbb;
+    padding: 3px 5px;
+    margin-bottom: 5px;
+    flex-shrink: 0;
+    white-space: nowrap;
+
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+
+#log {
+    margin-top: 5px;   /* 余白があれば減らす */
+    height: 20vh;      /* 必要に応じて減らす */
+    padding: 5px 5px 5px 5px;
+  }
+  #status .label {
+    margin-right: 10px;
+}
+
+
+#log-messages {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+#status {
+    height: 5vh;
+    background: #bbb;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    white-space: nowrap;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#status span.label {
+    font-weight: bold;
+    background: #999;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: white;
+    font-family: monospace;
+}
+#status2 {
+    height: 5vh;
+    background: #bbb;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    white-space: nowrap;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#status2 span.label {
+    font-weight: bold;
+    background: #999;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: white;
+    font-family: monospace;
+}

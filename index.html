@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ナンパゲーム</title>
+    <link rel="stylesheet" href="main.css?v=ll0" />
+</head>
+
+<body>
+    <div id="start-screen">
+
+        <h1>ナンパゲーム</h1>
+
+        <div style="margin:10px">
+            <label>動画選択:
+                <select id="video-select">
+                    <option value="1.mp4">動画1</option>
+                    <option value="2.mp4">動画2</option>
+                    <option value="3.mp4">動画3</option>
+                </select>
+            </label>
+        </div>
+
+        <div id="start-status" style="font-size:14px; margin: 10px;">
+            <!-- 能力値と累計がここに出ます -->
+        </div>
+
+        <button id="start-btn" style="font-size: 24px; padding: 10px 20px; cursor: pointer;">スタート</button>
+    </div>
+
+    <div id="game">
+        <video id="game-video" src="1.mp4" autoplay muted></video>
+        <div id="buttons">
+            <button id="btn-left" class="tap-button" disabled>左</button>
+            <button id="btn-right" class="tap-button" disabled>右</button>
+        </div>
+
+        <div id="log">
+            <div id="log-status"></div>
+            <div id="log-messages"></div>
+        </div>
+        <div id="status"></div>
+        <div id="status2"></div>
+    </div>
+    <script src="game.js?v=2"></script>
+</body>
+</html>
