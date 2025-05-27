@@ -5,12 +5,83 @@
     // if (location.hostname === '172.21.75.92') {
     //     localStorage.clear(); // 開発環境だけリセット
     // }
-    const schedule = [
-        { time: 1, side: "left" },
-        { time: 4, side: "right" },
-        { time: 7, side: "left" },
-        { time: 10, side: "right" }
-    ];    
+
+    const schedules = {
+        "1.mp4": [
+            { time: 2, side: "right" },
+            { time: 16, side: "right" },
+            { time: 33.6, side: "right" },
+            { time: 36, side: "right" },
+            { time: 38.3, side: "right" },
+            { time: 43, side: "right" },
+            { time: 121, side: "right" },
+            { time: 146.4, side: "right" },
+            { time: 149.4, side: "left" },
+            { time: 155.9, side: "left" },
+            { time: 161.1, side: "right" },
+            { time: 215.6, side: "right" },
+            { time: 272.4, side: "right" },
+            { time: 277, side: "right" },
+            { time: 284.5, side: "right" },
+            { time: 290, side: "left" },
+            { time: 314.4, side: "left" },
+            { time: 331.6, side: "right" },
+            { time: 333.6, side: "left" }
+        ],
+        "2.mp4": [
+            { time: 1, side: "right" },
+            { time: 10.7, side: "right" },
+            { time: 41, side: "right" },
+            { time: 52.7, side: "right" },
+            { time: 63.2, side: "left" },
+            { time: 78, side: "right" },
+            { time: 86.4, side: "right" },
+            { time: 95.6, side: "left" },
+            { time: 109, side: "left" }
+        ],
+        "3.mp4": [
+            { time: 4.3, side: "right" },
+            { time: 16.1, side: "left" },
+            { time: 27.7, side: "left" },
+            { time: 35.6, side: "right" },
+            { time: 42, side: "right" },
+            { time: 49, side: "left" },
+            { time: 77.8, side: "left" },
+            { time: 84.5, side: "left" },
+            { time: 130, side: "left" },
+            { time: 158.5, side: "right" },
+            { time: 164.5, side: "right" },
+            { time: 167.4, side: "right" },
+            { time: 185.7, side: "right" },
+            { time: 208.3, side: "right" },
+            { time: 233, side: "right" }
+
+        ],
+
+
+        "4.mp4": [
+    {time:0.4,side:"right"},
+    {time:20.5,side:"right"},
+    {time:23,side:"right"},
+    {time:27.5,side:"right"},
+    {time:39.1,side:"left"},
+    {time:39.5,side:"right"},
+    {time:42,side:"left"},
+    {time:47.5,side:"right"},
+    {time:60.4,side:"left"},
+    {time:62.7,side:"left"},
+    {time:68.4,side:"right"},
+    {time:76.3,side:"right"},
+    {time:78.9,side:"left"},
+    {time:89.6,side:"left"}
+        ],
+
+    };
+
+
+    let currentSchedule = [];
+
+
     // ページ読み込み時にplayerの値を復元
     function loadPlayer() {
         const saved = localStorage.getItem("player");
@@ -79,7 +150,7 @@
         left: document.getElementById("btn-left"),
         right: document.getElementById("btn-right"),
     };
-    
+
     const buttonIds = ["left", "right"];
     const tapCounts = { left: 0, right: 0 };
 
@@ -130,7 +201,7 @@
 
     function updateLogStatus() {
         logStatusEl.textContent =
-            `地蔵:${oneplayer.approachAttempts-oneplayer.approachSuccess} 声かけ:${oneplayer.approachSuccess} 無視:${oneplayer.ignored} ` +
+            `地蔵:${oneplayer.approachAttempts - oneplayer.approachSuccess} 声かけ:${oneplayer.approachSuccess} 無視:${oneplayer.ignored} ` +
             `低反応:${oneplayer.lowReact} 高反応:${oneplayer.highReact} 連れ出し:${oneplayer.pulled} クロージング:${oneplayer.closed}`;
     }
 
@@ -167,7 +238,7 @@
             statusEll.appendChild(span);
         });
     }
-    
+
 
     function updateStartStatus() {
         const el = document.getElementById("start-status");
@@ -242,11 +313,11 @@
 
 
         console.log("attemptApproachが呼ばれました activeButton:", activeButton);
-    if (cooldown) {
-        console.log("クールダウン中なので処理をスキップ");
-        return;
-    }
-    cooldown = true;
+        if (cooldown) {
+            console.log("クールダウン中なので処理をスキップ");
+            return;
+        }
+        cooldown = true;
 
 
 
@@ -258,12 +329,12 @@
         const chance = Math.random() * 100;
         if (!player.nextLevelThreshold) {
             player.nextLevelThreshold = 10; // レベル2に必要な成功数
-          }
+        }
         if (chance < player.approach) {
             player.approachSuccess++;
             savePlayer();
             oneplayer.approachSuccess++;
-              if (player.approachSuccess >= player.nextLevelThreshold) {
+            if (player.approachSuccess >= player.nextLevelThreshold) {
                 player.level++;
                 player.approach++; // 声かけ能力 +1
                 // 成長させる能力値を選ぶ（最大2つ）
@@ -274,11 +345,11 @@
                 }
                 // ログメッセージを1回にまとめる
                 const upgrades = [`声かけ+1`, ...upgradedStats.map(stat => `${statLabels[stat]}+1`)];
-                log(`🎉レベルアップ！Lv${player.level}になった！${upgrades.join("、")}`);            
+                log(`🎉レベルアップ！Lv${player.level}になった！${upgrades.join("、")}`);
                 // 次のレベルのしきい値を更新
-                player.nextLevelThreshold = player.nextLevelThreshold+player.level * 10;
+                player.nextLevelThreshold = player.nextLevelThreshold + player.level * 10;
             }
-            
+
 
             savePlayer();
             updateStatus();
@@ -373,6 +444,11 @@
 
         startBtn.addEventListener("click", () => {
             const selected = document.getElementById("video-select").value;
+            currentSchedule = schedules[selected] || [];
+            video.addEventListener("play", () => {
+                startScheduledHighlights(currentSchedule);
+            });
+
             video.src = selected;
             startScreen.style.display = "none";
             gameScreen.style.display = "flex";
@@ -393,10 +469,10 @@
             //     startHighlightLoop();
             // });
 
-            video.addEventListener("play", () => {
-                startScheduledHighlights();
-            });
-            
+            // video.addEventListener("play", () => {
+            //     startScheduledHighlights();
+            // });
+
 
             video.addEventListener("pause", () => {
                 stopHighlightLoop();
@@ -432,31 +508,27 @@
     function disableDoubleTapZoom() {
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function (event) {
-          const now = Date.now();
-          if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
-          }
-          lastTouchEnd = now;
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
         }, { passive: false });
-      }
+    }
 
 
-      function startScheduledHighlights() {
+    function startScheduledHighlights(schedule) {
         const scheduleWithState = schedule.map(item => ({ ...item, shown: false }));
-    
         const interval = setInterval(() => {
             if (video.paused || video.ended) return;
-    
             const current = video.currentTime;
-    
             for (const item of scheduleWithState) {
                 if (!item.shown && current >= item.time) {
                     item.shown = true;
-    
                     activeButton = item.side;
                     buttons[item.side].classList.add("highlight");
                     enableButton(item.side);
-    
+
                     setTimeout(() => {
                         if (activeButton === item.side) {
                             clearActiveButton();
@@ -465,13 +537,13 @@
                     }, 2000);
                 }
             }
-    
+
             if (scheduleWithState.every(item => item.shown)) {
                 clearInterval(interval);
             }
         }, 200);
     }
-    
+
     function setupButtons() {
         buttonIds.forEach(id => {
             buttons[id].onclick = () => {
