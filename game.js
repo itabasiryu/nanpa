@@ -238,8 +238,20 @@
     }
 
     function attemptApproach() {
-        if (cooldown) return;
-        cooldown = true;
+
+
+
+        console.log("attemptApproachが呼ばれました activeButton:", activeButton);
+    if (cooldown) {
+        console.log("クールダウン中なので処理をスキップ");
+        return;
+    }
+    cooldown = true;
+
+
+
+        // if (cooldown) return;
+        // cooldown = true;
         player.approachAttempts++;
         savePlayer();
         oneplayer.approachAttempts++;
@@ -276,7 +288,7 @@
         }
         updateLogStatus();
         updateStatus();
-        setTimeout(() => cooldown = false, 5000);
+        setTimeout(() => cooldown = false, 2000);
     }
 
 
@@ -330,7 +342,7 @@
             buttons[id].onclick = () => {
                 if (activeButton !== id) return;
                 tapCounts[id]++;
-                if (tapCounts[id] >= 3) {
+                if (tapCounts[id] >= 1) {
                     attemptApproach();
                     tapCounts[id] = 0;
                 }
@@ -429,7 +441,6 @@
       }
 
 
-
       function startScheduledHighlights() {
         const scheduleWithState = schedule.map(item => ({ ...item, shown: false }));
     
@@ -442,7 +453,6 @@
                 if (!item.shown && current >= item.time) {
                     item.shown = true;
     
-                    clearActiveButton();
                     activeButton = item.side;
                     buttons[item.side].classList.add("highlight");
                     enableButton(item.side);
@@ -452,16 +462,31 @@
                             clearActiveButton();
                             disableAllButtons();
                         }
-                    }, 2500);
+                    }, 2000);
                 }
             }
     
-            // 全て表示済みなら監視を停止
             if (scheduleWithState.every(item => item.shown)) {
                 clearInterval(interval);
             }
-        }, 200); // 200msごとにチェック
+        }, 200);
     }
     
+    function setupButtons() {
+        buttonIds.forEach(id => {
+            buttons[id].onclick = () => {
+                console.log(`Clicked button: ${id}, activeButton: ${activeButton}`);  // 追加：クリックが検知されているか
+                if (activeButton !== id) {
+                    console.log("クリック無効（ハイライトと違うボタン）");
+                    return;
+                }
+                tapCounts[id]++;
+                if (tapCounts[id] >= 1) {
+                    attemptApproach();
+                    tapCounts[id] = 0;
+                }
+            };
+        });
+    }
 
 })();
