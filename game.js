@@ -5,6 +5,12 @@
     // if (location.hostname === '172.21.75.92') {
     //     localStorage.clear(); // 開発環境だけリセット
     // }
+    const schedule = [
+        { time: 1, side: "left" },
+        { time: 4, side: "right" },
+        { time: 7, side: "left" },
+        { time: 10, side: "right" }
+    ];    
     // ページ読み込み時にplayerの値を復元
     function loadPlayer() {
         const saved = localStorage.getItem("player");
@@ -245,28 +251,6 @@
             player.approachSuccess++;
             savePlayer();
             oneplayer.approachSuccess++;
-              
-              // レベルアップ判定
-            //   if (player.approachSuccess >= player.nextLevelThreshold) {
-            //       player.level++;
-            //       player.approach++;
-            //       // 能力値アップ処理
-            //       const upgradableStats = ["talk", "voice", "coord", "posture"].filter(stat => player[stat] <= 88);
-            //     //   for (const stat of shuffleArray(upgradableStats).slice(0, 2)) {
-            //     //       player[stat]++;
-            //     //       log(`🎉レベルアップ！Lv${player.level}になった！声かけ+1、${stat}+1`);
-            //     //   }  
-
-
-            //       const upgrades = [`声かけ+1`, ...upgradedStats.map(stat => `${statLabels[stat]}+1`)];
-            //       log(`🎉レベルアップ！Lv${player.level}になった！${upgrades.join("、")}`);
-
-
-            //       player.nextLevelThreshold = player.nextLevelThreshold+player.level * 10;
-            //   }
-              
-              
-
               if (player.approachSuccess >= player.nextLevelThreshold) {
                 player.level++;
                 player.approach++; // 声かけ能力 +1
@@ -280,7 +264,6 @@
                 const upgrades = [`声かけ+1`, ...upgradedStats.map(stat => `${statLabels[stat]}+1`)];
                 log(`🎉レベルアップ！Lv${player.level}になった！${upgrades.join("、")}`);            
                 // 次のレベルのしきい値を更新
-                // player.nextLevelThreshold = player.level * 10;
                 player.nextLevelThreshold = player.nextLevelThreshold+player.level * 10;
             }
             
@@ -394,9 +377,15 @@
                 }
             });
 
+            // video.addEventListener("play", () => {
+            //     startHighlightLoop();
+            // });
+
             video.addEventListener("play", () => {
-                startHighlightLoop();
+                startScheduledHighlights();
             });
+            
+
             video.addEventListener("pause", () => {
                 stopHighlightLoop();
             });
@@ -438,4 +427,41 @@
           lastTouchEnd = now;
         }, { passive: false });
       }
+
+
+
+      function startScheduledHighlights() {
+        const scheduleWithState = schedule.map(item => ({ ...item, shown: false }));
+    
+        const interval = setInterval(() => {
+            if (video.paused || video.ended) return;
+    
+            const current = video.currentTime;
+    
+            for (const item of scheduleWithState) {
+                if (!item.shown && current >= item.time) {
+                    item.shown = true;
+    
+                    clearActiveButton();
+                    activeButton = item.side;
+                    buttons[item.side].classList.add("highlight");
+                    enableButton(item.side);
+    
+                    setTimeout(() => {
+                        if (activeButton === item.side) {
+                            clearActiveButton();
+                            disableAllButtons();
+                        }
+                    }, 2500);
+                }
+            }
+    
+            // 全て表示済みなら監視を停止
+            if (scheduleWithState.every(item => item.shown)) {
+                clearInterval(interval);
+            }
+        }, 200); // 200msごとにチェック
+    }
+    
+
 })();
