@@ -2,6 +2,7 @@ body {
     margin: 0;
     font-family: sans-serif;
     background: #f2f2f2;
+    touch-action: manipulation;
 }  
 
 #start-screen,
@@ -21,11 +22,11 @@ body {
 
 #game-video {
     width: 100%;
-    height: 50vh;
+    height: 35vh;
     object-fit: contain;
     background: black;
     cursor: pointer;
-}  
+}
 
 #buttons {
     height: 20vh;
@@ -58,7 +59,7 @@ body {
 }
 
 #log {
-    height: 20vh;
+    height: 35vh;
     overflow-y: auto;
     background: #ddd;
     padding: 5px;
