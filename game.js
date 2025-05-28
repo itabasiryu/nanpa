@@ -89,11 +89,11 @@
             // 初期値
             return {
                 level: 1,
-                coord: 70,
-                voice: 59,
+                coord: 69,
+                voice: 55,
                 posture: 58,
-                approach: 1,
-                talk: 10,
+                approach: 14,
+                talk: 14,
                 approachAttempts: 0,
                 approachSuccess: 0,
                 ignored: 0,
