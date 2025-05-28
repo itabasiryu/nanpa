@@ -57,23 +57,21 @@
             { time: 233, side: "right" }
 
         ],
-
-
         "4.mp4": [
-    {time:0.4,side:"right"},
-    {time:20.5,side:"right"},
-    {time:23,side:"right"},
-    {time:27.5,side:"right"},
-    {time:39.1,side:"left"},
-    {time:39.5,side:"right"},
-    {time:42,side:"left"},
-    {time:47.5,side:"right"},
-    {time:60.4,side:"left"},
-    {time:62.7,side:"left"},
-    {time:68.4,side:"right"},
-    {time:76.3,side:"right"},
-    {time:78.9,side:"left"},
-    {time:89.6,side:"left"}
+            { time: 0.4, side: "right" },
+            { time: 20.5, side: "right" },
+            { time: 23, side: "right" },
+            { time: 27.5, side: "right" },
+            { time: 39.1, side: "left" },
+            { time: 39.5, side: "right" },
+            { time: 42, side: "left" },
+            { time: 47.5, side: "right" },
+            { time: 60.4, side: "left" },
+            { time: 62.7, side: "left" },
+            { time: 68.4, side: "right" },
+            { time: 76.3, side: "right" },
+            { time: 78.9, side: "left" },
+            { time: 89.6, side: "left" }
         ],
 
     };
@@ -91,11 +89,11 @@
             // 初期値
             return {
                 level: 1,
-                coord: 72,
-                voice: 67,
-                posture: 70,
-                approach: 85,
-                talk: 20,
+                coord: 70,
+                voice: 59,
+                posture: 58,
+                approach: 1,
+                talk: 10,
                 approachAttempts: 0,
                 approachSuccess: 0,
                 ignored: 0,
@@ -139,12 +137,6 @@
     const logMessagesEl = document.getElementById("log-messages");
     const statusEl = document.getElementById("status");
     const statusEll = document.getElementById("status2");
-    // const buttons = {
-    //     tl: document.getElementById("btn-tl"),
-    //     tr: document.getElementById("btn-tr"),
-    //     bl: document.getElementById("btn-bl"),
-    //     br: document.getElementById("btn-br"),
-    // };
 
     const buttons = {
         left: document.getElementById("btn-left"),
@@ -154,8 +146,6 @@
     const buttonIds = ["left", "right"];
     const tapCounts = { left: 0, right: 0 };
 
-    // const buttonIds = ["tl", "tr", "bl", "br"];
-    // const tapCounts = { tl: 0, tr: 0, bl: 0, br: 0 };
     let activeButton = null;
     let cooldown = false;
     let intervalId = null;
@@ -191,7 +181,6 @@
         }
     }
 
-
     function log(text) {
         const div = document.createElement("div");
         div.textContent = text;
@@ -205,17 +194,6 @@
             `低反応:${oneplayer.lowReact} 高反応:${oneplayer.highReact} 連れ出し:${oneplayer.pulled} クロージング:${oneplayer.closed}`;
     }
 
-    // function updateStatus() {
-    //     statusEl.innerHTML = "";
-    //     for (const key of ["coord", "voice", "posture", "approach", "talk"]) {
-    //         const span = document.createElement("span");
-    //         span.className = "label";
-    //         const rank = getRank(player[key]);
-    //         span.textContent = `${statLabels[key]}:${player[key]}(${rank})`;
-    //         span.style.backgroundColor = getRankColor(rank);
-    //         statusEl.appendChild(span);
-    //     }
-    // }
     function updateStatus() {
         statusEl.innerHTML = "";
         statusEll.innerHTML = "";
@@ -238,7 +216,6 @@
             statusEll.appendChild(span);
         });
     }
-
 
     function updateStartStatus() {
         const el = document.getElementById("start-status");
@@ -309,20 +286,12 @@
     }
 
     function attemptApproach() {
-
-
-
         console.log("attemptApproachが呼ばれました activeButton:", activeButton);
         if (cooldown) {
             console.log("クールダウン中なので処理をスキップ");
             return;
         }
         cooldown = true;
-
-
-
-        // if (cooldown) return;
-        // cooldown = true;
         player.approachAttempts++;
         savePlayer();
         oneplayer.approachAttempts++;
@@ -349,8 +318,6 @@
                 // 次のレベルのしきい値を更新
                 player.nextLevelThreshold = player.nextLevelThreshold + player.level * 10;
             }
-
-
             savePlayer();
             updateStatus();
             react();
@@ -361,7 +328,6 @@
         updateStatus();
         setTimeout(() => cooldown = false, 2000);
     }
-
 
     function react() {
         const avg = (player.coord + player.voice + player.posture) / 3;
@@ -405,8 +371,6 @@
             }
         }
     }
-
-
 
     function setupButtons() {
         buttonIds.forEach(id => {
@@ -465,15 +429,6 @@
                 }
             });
 
-            // video.addEventListener("play", () => {
-            //     startHighlightLoop();
-            // });
-
-            // video.addEventListener("play", () => {
-            //     startScheduledHighlights();
-            // });
-
-
             video.addEventListener("pause", () => {
                 stopHighlightLoop();
             });
@@ -504,7 +459,6 @@
 
     init();
 
-
     function disableDoubleTapZoom() {
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function (event) {
@@ -515,7 +469,6 @@
             lastTouchEnd = now;
         }, { passive: false });
     }
-
 
     function startScheduledHighlights(schedule) {
         const scheduleWithState = schedule.map(item => ({ ...item, shown: false }));
