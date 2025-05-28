@@ -301,7 +301,7 @@
         oneplayer.approachAttempts++;
         const chance = Math.random() * 100;
         if (!player.nextLevelThreshold) {
-            player.nextLevelThreshold = 10; // レベル2に必要な成功数
+            player.nextLevelThreshold = 5; // レベル2に必要な成功数
         }
         if (chance < player.approach) {
             player.approachSuccess++;
@@ -320,7 +320,7 @@
                 const upgrades = [`声かけ+1`, ...upgradedStats.map(stat => `${statLabels[stat]}+1`)];
                 log(`🎉レベルアップ！Lv${player.level}になった！${upgrades.join("、")}`);
                 // 次のレベルのしきい値を更新
-                player.nextLevelThreshold = player.nextLevelThreshold + player.level * 10;
+                player.nextLevelThreshold = player.nextLevelThreshold + player.level * 5;
             }
             savePlayer();
             updateStatus();
